@@ -10,9 +10,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class StudyGroupRepoService {
+public class StudyRepoService {
 
-	private final StudyGroupRepository groupRepository;
+	private final StudyRepository groupRepository;
 	private final StudyMemberRepository memberRepository;
 
 	public Mono<Study> fetchOne(Long studyId) {

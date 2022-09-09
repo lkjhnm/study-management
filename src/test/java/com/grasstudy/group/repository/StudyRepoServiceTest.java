@@ -5,20 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class StudyGroupRepoServiceTest {
+class StudyRepoServiceTest {
 
 	@Autowired
-	StudyGroupRepository repository;
+	StudyRepository repository;
 
 	@Autowired
-	StudyGroupRepoService studyGroupRepoService;
+	StudyRepoService studyRepoService;
 
 	@Test
 	void fetchOne() {
-		StepVerifier.create(studyGroupRepoService.fetchOne(1l).log())
+		StepVerifier.create(studyRepoService.fetchOne(1l).log())
 				.expectNextCount(1)
 				.verifyComplete();
 	}

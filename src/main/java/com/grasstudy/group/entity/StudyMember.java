@@ -12,7 +12,7 @@ public class StudyMember {
 
 	@Id
 	private Long id;
-	private Long studyGroupId;
+	private Long studyId;
 	private String userId;
 
 	private Authority authority;

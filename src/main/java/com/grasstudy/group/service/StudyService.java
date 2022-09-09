@@ -1,15 +1,15 @@
 package com.grasstudy.group.service;
 
 import com.grasstudy.group.entity.Study;
-import com.grasstudy.group.repository.StudyGroupRepository;
+import com.grasstudy.group.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class StudyGroupService {
+public class StudyService {
 
-	private final StudyGroupRepository repository;
+	private final StudyRepository repository;
 
 	public void create(Study study) {
 		this.repository.save(study);
