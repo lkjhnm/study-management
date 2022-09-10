@@ -1,6 +1,6 @@
-package com.grasstudy.group.controller;
+package com.grasstudy.study.controller;
 
-import com.grasstudy.group.service.StudyService;
+import com.grasstudy.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class StudyController {
 
-	private final StudyService groupService;
+	private final StudyService studyService;
 
 	@RequestMapping(value = "/study", method = RequestMethod.POST)
 	public Mono<Void> create() {

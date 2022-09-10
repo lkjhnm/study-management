@@ -1,4 +1,4 @@
-package com.grasstudy.group.repository;
+package com.grasstudy.study.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,10 @@
-package com.grasstudy.group;
+package com.grasstudy.study;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GroupApplicationTests {
+class StudyApplicationTests {
 
 	@Test
 	void contextLoads() {

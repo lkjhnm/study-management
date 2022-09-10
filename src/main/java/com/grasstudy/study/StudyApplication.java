@@ -1,13 +1,13 @@
-package com.grasstudy.group;
+package com.grasstudy.study;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GroupApplication {
+public class StudyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GroupApplication.class, args);
+		SpringApplication.run(StudyApplication.class, args);
 	}
 
 }

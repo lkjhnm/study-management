@@ -1,7 +1,7 @@
-package com.grasstudy.group.repository;
+package com.grasstudy.study.repository;
 
-import com.grasstudy.group.entity.Study;
-import com.grasstudy.group.entity.StudyMember;
+import com.grasstudy.study.entity.Study;
+import com.grasstudy.study.entity.StudyMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -12,12 +12,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudyRepoService {
 
-	private final StudyRepository groupRepository;
+	private final StudyRepository studyRepository;
 	private final StudyMemberRepository memberRepository;
 
+	public Mono<Study> create(Study study) {
+		return this.studyRepository.save(study);
+		// event 전파
+	}
+
 	public Mono<Study> fetchOne(Long studyId) {
-		Mono<Study> studyGroup = groupRepository.findById(studyId);
-		Mono<List<StudyMember>> members = memberRepository.findAllByStudyGroupId(studyId)
+		Mono<Study> studyGroup = studyRepository.findById(studyId);
+		Mono<List<StudyMember>> members = memberRepository.findAllByStudyId(studyId)
 		                                                            .collectList();
 		return Mono.zip(studyGroup, members)
 				.map(t ->{

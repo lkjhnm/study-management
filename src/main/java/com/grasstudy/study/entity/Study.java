@@ -1,4 +1,4 @@
-package com.grasstudy.group.entity;
+package com.grasstudy.study.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

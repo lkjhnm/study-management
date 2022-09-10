@@ -1,6 +1,6 @@
-package com.grasstudy.group;
+package com.grasstudy.study;
 
-import com.grasstudy.group.entity.StudyMember;
+import com.grasstudy.study.entity.StudyMember;
 import io.r2dbc.h2.H2ConnectionConfiguration;
 import io.r2dbc.h2.H2ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactory;
