@@ -1,7 +1,9 @@
 package com.grasstudy.study.controller;
 
+import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +16,7 @@ public class StudyController {
 	private final StudyService studyService;
 
 	@RequestMapping(value = "/study", method = RequestMethod.POST)
-	public Mono<Void> create() {
-		return Mono.empty();
+	public Mono<ResponseEntity<Void>> create(Study study) {
+		return studyService.create(study);
 	}
 }

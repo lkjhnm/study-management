@@ -17,7 +17,6 @@ public class StudyRepoService {
 
 	public Mono<Study> create(Study study) {
 		return this.studyRepository.save(study);
-		// event 전파
 	}
 
 	public Mono<Study> fetchOne(Long studyId) {

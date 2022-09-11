@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    stream:
+      function:
+        definition: studyPublisher;studyConsumer;
+      bindings:
+        studyConsumer-in-0:
+          destination: study-event
+        studyPublisher-out-0:
+          destination: study-event
