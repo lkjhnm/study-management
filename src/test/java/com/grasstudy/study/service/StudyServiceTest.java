@@ -1,33 +1,34 @@
 package com.grasstudy.study.service;
 
-import com.grasstudy.study.StudyApplication;
 import com.grasstudy.study.entity.Study;
-import com.grasstudy.study.event.scheme.StudyCreateEvent;
-import org.assertj.core.api.Assertions;
+import com.grasstudy.study.event.StudyEventPublisher;
+import com.grasstudy.study.repository.StudyRepoService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.binder.test.OutputDestination;
-import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.converter.CompositeMessageConverter;
-import org.springframework.test.context.ContextConfiguration;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.List;
 
-@SpringBootTest
-@ContextConfiguration(classes = {TestChannelBinderConfiguration.class, StudyApplication.class})
+import static org.mockito.ArgumentMatchers.any;
+
+@ExtendWith(SpringExtension.class)
 class StudyServiceTest {
 
-	@Autowired
+	@InjectMocks
 	StudyService studyService;
 
-	@Autowired
-	OutputDestination outputDestination;
+	@Mock
+	StudyRepoService studyRepoService;
 
-	@Autowired
-	CompositeMessageConverter compositeMessageConverter;
+	@Mock
+	StudyEventPublisher studyEventPublisher;
 
 	@Test
 	void create() {
@@ -36,16 +37,9 @@ class StudyServiceTest {
 		                   .name("test-study")
 		                   .interestTags(List.of("java", "msa"))
 		                   .build();
-
+		Mockito.when(studyRepoService.create(any())).thenReturn(Mono.just(study));
 		StepVerifier.create(studyService.create(study))
-		            .expectNextCount(1)
+		            .expectNext(ResponseEntity.status(HttpStatus.CREATED).<Void>build())
 		            .verifyComplete();
-
-		Message<byte[]> receive = outputDestination.receive(1000, "study-create-event");
-		StudyCreateEvent studyCreateEvent = (StudyCreateEvent) compositeMessageConverter.fromMessage(receive, StudyCreateEvent.class);
-		Assertions.assertThat(studyCreateEvent)
-		          .matches(v -> v.getStudy().getId().equals(1l), "Id Equals")
-		          .matches(v -> v.getStudy().getName().equals("test-study"), "Name Equals")
-		          .matches(v -> v.getStudy().getInterestTags().containsAll(List.of("java", "msa")), "Interests Equals");
 	}
 }
