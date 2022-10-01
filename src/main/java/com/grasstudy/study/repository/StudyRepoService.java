@@ -22,7 +22,7 @@ public class StudyRepoService {
 	public Mono<Study> fetchOne(Long studyId) {
 		Mono<Study> studyGroup = studyRepository.findById(studyId);
 		Mono<List<StudyMember>> members = memberRepository.findAllByStudyId(studyId)
-		                                                            .collectList();
+		                                                  .collectList();
 		return Mono.zip(studyGroup, members)
 				.map(t ->{
 					Study study = t.getT1();

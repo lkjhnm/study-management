@@ -2,7 +2,7 @@ package com.grasstudy.study.service;
 
 import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.event.StudyEventPublisher;
-import com.grasstudy.study.event.scheme.StudyEvent;
+import com.grasstudy.study.event.scheme.StudyCreateEvent;
 import com.grasstudy.study.repository.StudyRepoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,17 +15,17 @@ import reactor.core.publisher.Mono;
 public class StudyService {
 
 	private final StudyRepoService repository;
+	private final StudyEventPublisher studyEventPublisher;
 
 	public Mono<ResponseEntity<Void>> create(Study study) {
 		return this.repository.create(study)
-		                      .doOnNext(this::publishEvent)
+		                      .doOnNext(this::publishCreateEvent)
 		                      .map(unused -> ResponseEntity.status(HttpStatus.CREATED).<Void>build())
 		                      .onErrorReturn(ResponseEntity.internalServerError().build());
 	}
 
-	private void publishEvent(Study study) {
-		StudyEventPublisher.publishEvent(StudyEvent.builder().study(study)
-		                                           .action(StudyEvent.ActionType.CREATE)
-		                                           .build());
+	private void publishCreateEvent(Study study) {
+		studyEventPublisher.publish(StudyCreateEvent.builder().study(study)
+		                                            .build());
 	}
 }

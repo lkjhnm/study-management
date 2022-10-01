@@ -2,9 +2,7 @@ spring:
   cloud:
     stream:
       function:
-        definition: studyPublisher;studyConsumer;
+        definition: studyCreateEventPublisher;
       bindings:
-        studyConsumer-in-0:
-          destination: study-event
-        studyPublisher-out-0:
-          destination: study-event
+        studyCreateEventPublisher-out-0:
+          destination: study-create-event

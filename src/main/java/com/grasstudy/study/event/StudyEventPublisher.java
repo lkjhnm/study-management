@@ -1,19 +1,27 @@
 package com.grasstudy.study.event;
 
-import com.grasstudy.study.event.scheme.StudyEvent;
+import com.grasstudy.study.event.scheme.StudyCreateEvent;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
 
+import java.util.function.Consumer;
+
+@Service
 public class StudyEventPublisher {
 
-	private static final Sinks.Many<StudyEvent> STUDY_SINK = Sinks.many().unicast().onBackpressureBuffer();
+	private final Flux<StudyCreateEvent> createEventFlux;
 
-	public static void publishEvent(StudyEvent studyEvent) {
-		Sinks.EmitResult emitResult = STUDY_SINK.tryEmitNext(studyEvent);
-		//todo: handle emit result
+	private Consumer<StudyCreateEvent> createEventConsumer;
+
+	public StudyEventPublisher() {
+		createEventFlux = Flux.create(fluxSink -> createEventConsumer = studyCreateEvent ->  fluxSink.next(studyCreateEvent));
 	}
 
-	public static Flux<StudyEvent> studyEventFlux() {
-		return STUDY_SINK.asFlux();
+	public void publish(StudyCreateEvent studyCreateEvent) {
+		this.createEventConsumer.accept(studyCreateEvent);
+	}
+
+	public Flux<StudyCreateEvent> createEventFlux() {
+		return this.createEventFlux;
 	}
 }
