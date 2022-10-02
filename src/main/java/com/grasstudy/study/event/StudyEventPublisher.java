@@ -14,7 +14,7 @@ public class StudyEventPublisher {
 	private Consumer<StudyCreateEvent> createEventConsumer;
 
 	public StudyEventPublisher() {
-		createEventFlux = Flux.create(fluxSink -> createEventConsumer = studyCreateEvent ->  fluxSink.next(studyCreateEvent));
+		createEventFlux = Flux.create(fluxSink -> createEventConsumer = fluxSink::next);
 	}
 
 	public void publish(StudyCreateEvent studyCreateEvent) {
