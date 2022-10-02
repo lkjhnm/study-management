@@ -18,7 +18,7 @@ public class StudyService {
 	private final StudyEventPublisher studyEventPublisher;
 
 	public Mono<ResponseEntity<Void>> create(Study study) {
-		return this.repository.create(study)
+		return this.repository.save(study)
 		                      .doOnNext(this::publishCreateEvent)
 		                      .map(unused -> ResponseEntity.status(HttpStatus.CREATED).<Void>build())
 		                      .onErrorReturn(ResponseEntity.internalServerError().build());

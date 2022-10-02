@@ -15,11 +15,11 @@ public class StudyRepoService {
 	private final StudyRepository studyRepository;
 	private final StudyMemberRepository memberRepository;
 
-	public Mono<Study> create(Study study) {
+	public Mono<Study> save(Study study) {
 		return this.studyRepository.save(study);
 	}
 
-	public Mono<Study> fetchOne(Long studyId) {
+	public Mono<Study> fetchOne(String studyId) {
 		Mono<Study> studyGroup = studyRepository.findById(studyId);
 		Mono<List<StudyMember>> members = memberRepository.findAllByStudyId(studyId)
 		                                                  .collectList();

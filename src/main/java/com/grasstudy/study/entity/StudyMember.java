@@ -3,17 +3,28 @@ package com.grasstudy.study.entity;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Data
 @Builder
 @Table
-public class StudyMember {
+public class StudyMember implements Persistable<String> {
 
 	@Id
-	private Long id;
-	private Long studyId;
+	private String id;
+	private String studyId;
 	private String userId;
+
+	@Override
+	public boolean isNew() {
+		boolean isNew = Objects.isNull(this.id);
+		this.id = isNew ? UUID.randomUUID().toString() : this.id;
+		return isNew;
+	}
 
 	private Authority authority;
 

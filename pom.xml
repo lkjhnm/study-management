@@ -15,6 +15,7 @@
     <description>microservice for study mangagement</description>
     <properties>
         <java.version>11</java.version>
+        <reuseForks>false</reuseForks>
     </properties>
     <dependencies>
         <dependency>

@@ -32,7 +32,7 @@ public class StudyEventPublisherTest {
 	public void createEventTest() {
 		studyEventPublisher.publish(StudyCreateEvent.builder()
 		                                            .study(Study.builder()
-		                                                        .id(1l)
+		                                                        .id("test-id")
 		                                                        .name("test-study")
 		                                                        .interestTags(List.of("java", "msa"))
 		                                                        .build())
@@ -42,7 +42,7 @@ public class StudyEventPublisherTest {
 		Assertions.assertThat(receive).isNotNull();
 		StudyCreateEvent studyCreateEvent = (StudyCreateEvent) compositeMessageConverter.fromMessage(receive, StudyCreateEvent.class);
 		Assertions.assertThat(studyCreateEvent)
-		          .matches(v -> v.getStudy().getId().equals(1l), "Id Equals")
+		          .matches(v -> v.getStudy().getId().equals("test-id"), "Id Equals")
 		          .matches(v -> v.getStudy().getName().equals("test-study"), "Name Equals")
 		          .matches(v -> v.getStudy().getInterestTags().containsAll(List.of("java", "msa")), "Interests Equals");
 	}

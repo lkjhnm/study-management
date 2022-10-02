@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
 @Repository
-public interface StudyMemberRepository extends ReactiveCrudRepository<StudyMember, Long> {
+public interface StudyMemberRepository extends ReactiveCrudRepository<StudyMember, String> {
 
-	Flux<StudyMember> findAllByStudyId(Long studyId);
+	Flux<StudyMember> findAllByStudyId(String studyId);
 }
