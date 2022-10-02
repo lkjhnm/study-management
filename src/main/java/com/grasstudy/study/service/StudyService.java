@@ -26,7 +26,13 @@ public class StudyService {
 
 	public Mono<ResponseEntity<Void>> modify(Study study) {
 		return this.repository.save(study)
-		                      .map(unused -> ResponseEntity.status(HttpStatus.CREATED).<Void>build())
+		                      .map(unused -> ResponseEntity.status(HttpStatus.NO_CONTENT).<Void>build())
+		                      .onErrorReturn(ResponseEntity.internalServerError().build());
+	}
+
+	public Mono<ResponseEntity<Void>> delete(String studyId) {
+		return this.repository.delete(studyId)
+		                      .map(unused -> ResponseEntity.status(HttpStatus.NO_CONTENT).<Void>build())
 		                      .onErrorReturn(ResponseEntity.internalServerError().build());
 	}
 

@@ -57,4 +57,15 @@ class StudyRepoServiceTest {
 		            .expectNextMatches(v -> Objects.nonNull(v.getMembers()))
 		            .verifyComplete();
 	}
+
+	@Test
+	void delete() {
+		StepVerifier.create(
+				            studyRepository.save(MockData.newStudy())
+				                           .flatMap(study -> memberRepository.save(MockData.newStudyMember(study.getId(), StudyMember.Authority.MEMBER)))
+				                           .flatMap(v -> studyRepoService.delete(v.getStudyId()))
+				                           .flatMap(id -> studyRepoService.fetchOne(id))
+		            ).expectNextCount(0)
+		            .verifyComplete();
+	}
 }

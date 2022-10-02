@@ -44,7 +44,16 @@ class StudyServiceTest {
 		Study study = MockData.mockStudy("test-study-id");
 		Mockito.when(studyRepoService.save(any())).thenReturn(Mono.just(study));
 		StepVerifier.create(studyService.modify(study))
-		            .expectNext(ResponseEntity.status(HttpStatus.CREATED).<Void>build())
+		            .expectNext(ResponseEntity.status(HttpStatus.NO_CONTENT).<Void>build())
+		            .verifyComplete();
+	}
+
+	@Test
+	void delete() {
+		Study study = MockData.mockStudy("test-study-id");
+		Mockito.when(studyRepoService.delete(any())).thenReturn(Mono.just(study.getId()));
+		StepVerifier.create(studyService.delete(study.getId()))
+		            .expectNext(ResponseEntity.status(HttpStatus.NO_CONTENT).<Void>build())
 		            .verifyComplete();
 	}
 }

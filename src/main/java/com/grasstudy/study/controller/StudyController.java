@@ -24,4 +24,9 @@ public class StudyController {
 	public Mono<ResponseEntity<Void>> modify(Study study) {
 		return studyService.modify(study);
 	}
+
+	@RequestMapping(value = "/study", method = RequestMethod.DELETE)
+	public Mono<ResponseEntity<Void>> delete(String studyId) {
+		return studyService.delete(studyId);
+	}
 }

@@ -30,4 +30,9 @@ public class StudyRepoService {
 					return study;
 				});
 	}
+
+	public Mono<String> delete(String studyId) {
+		return Mono.zip(studyRepository.deleteById(studyId), memberRepository.deleteAllByStudyId(studyId))
+				.map(unused -> studyId);
+	}
 }
