@@ -36,5 +36,6 @@ class StudyServiceTest {
 		StepVerifier.create(studyService.create(study))
 		            .expectNext(ResponseEntity.status(HttpStatus.CREATED).<Void>build())
 		            .verifyComplete();
+		Mockito.verify(studyEventPublisher, Mockito.times(1)).publish(any());
 	}
 }
