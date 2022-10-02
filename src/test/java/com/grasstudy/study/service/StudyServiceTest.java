@@ -38,4 +38,13 @@ class StudyServiceTest {
 		            .verifyComplete();
 		Mockito.verify(studyEventPublisher, Mockito.times(1)).publish(any());
 	}
+
+	@Test
+	void modify() {
+		Study study = MockData.mockStudy("test-study-id");
+		Mockito.when(studyRepoService.save(any())).thenReturn(Mono.just(study));
+		StepVerifier.create(studyService.modify(study))
+		            .expectNext(ResponseEntity.status(HttpStatus.CREATED).<Void>build())
+		            .verifyComplete();
+	}
 }

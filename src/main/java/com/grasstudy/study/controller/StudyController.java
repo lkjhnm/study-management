@@ -19,4 +19,9 @@ public class StudyController {
 	public Mono<ResponseEntity<Void>> create(Study study) {
 		return studyService.create(study);
 	}
+
+	@RequestMapping(value = "/study", method = RequestMethod.PUT)
+	public Mono<ResponseEntity<Void>> modify(Study study) {
+		return studyService.modify(study);
+	}
 }

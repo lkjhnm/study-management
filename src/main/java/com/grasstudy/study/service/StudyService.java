@@ -24,6 +24,12 @@ public class StudyService {
 		                      .onErrorReturn(ResponseEntity.internalServerError().build());
 	}
 
+	public Mono<ResponseEntity<Void>> modify(Study study) {
+		return this.repository.save(study)
+		                      .map(unused -> ResponseEntity.status(HttpStatus.CREATED).<Void>build())
+		                      .onErrorReturn(ResponseEntity.internalServerError().build());
+	}
+
 	private void publishCreateEvent(Study study) {
 		studyEventPublisher.publish(StudyCreateEvent.builder().study(study)
 		                                            .build());
