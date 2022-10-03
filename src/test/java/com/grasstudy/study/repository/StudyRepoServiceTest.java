@@ -27,19 +27,19 @@ class StudyRepoServiceTest {
 	StudyMemberRepository memberRepository;
 
 	private Mono<String> saveMockStudy() {
-		return studyRepoService.save(MockData.newStudy())
+		return studyRepoService.save(MockData.study())
 		                       .map(Study::getId);
 	}
 
 	private Mono<String> saveMockStudyWithMember() {
 		return saveMockStudy()
-				.flatMap(studyId -> memberRepository.save(MockData.newStudyMember(studyId, StudyMember.Authority.MEMBER)))
+				.flatMap(studyId -> memberRepository.save(MockData.studyMember(studyId, StudyMember.Authority.MEMBER)))
 				.map(StudyMember::getStudyId);
 	}
 
 	@Test
 	void insert() {
-		studyRepoService.save(MockData.newStudy())
+		studyRepoService.save(MockData.study())
 		                .map(Study::getId)
 		                .flatMap(studyRepository::findById)
 		                .as(StepVerifier::create)

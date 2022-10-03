@@ -13,3 +13,11 @@ CREATE TABLE STUDY_MEMBER
     user_id   VARCHAR,
     authority VARCHAR
 );
+
+CREATE TABLE STUDY_JOIN
+(
+    id       VARCHAR primary key,
+    study_id VARCHAR,
+    user_id  VARCHAR,
+    state    VARCHAR
+);

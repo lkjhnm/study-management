@@ -9,8 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -31,29 +29,29 @@ class StudyServiceTest {
 
 	@Test
 	void create() {
-		Study study = MockData.newStudy();
+		Study study = MockData.study();
 		Mockito.when(studyRepoService.save(any())).thenReturn(Mono.just(study));
 		StepVerifier.create(studyService.create(study))
-		            .expectNext(ResponseEntity.status(HttpStatus.CREATED).<Void>build())
+		            .expectNext(study)
 		            .verifyComplete();
 		Mockito.verify(studyEventPublisher, Mockito.times(1)).publish(any());
 	}
 
 	@Test
 	void modify() {
-		Study study = MockData.mockStudy("test-study-id");
+		Study study = MockData.study("test-study-id");
 		Mockito.when(studyRepoService.save(any())).thenReturn(Mono.just(study));
 		StepVerifier.create(studyService.modify(study))
-		            .expectNext(ResponseEntity.status(HttpStatus.NO_CONTENT).<Void>build())
+		            .expectNext(study)
 		            .verifyComplete();
 	}
 
 	@Test
 	void delete() {
-		Study study = MockData.mockStudy("test-study-id");
+		Study study = MockData.study("test-study-id");
 		Mockito.when(studyRepoService.delete(any())).thenReturn(Mono.just(study.getId()));
 		StepVerifier.create(studyService.delete(study.getId()))
-		            .expectNext(ResponseEntity.status(HttpStatus.NO_CONTENT).<Void>build())
+		            .expectNext("test-study-id")
 		            .verifyComplete();
 	}
 }
