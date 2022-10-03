@@ -1,31 +1,24 @@
 package com.grasstudy.study.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.Persistable;
+import lombok.*;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Objects;
-import java.util.UUID;
-
 @Data
-@Builder
 @Table
-public class StudyMember implements Persistable<String> {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class StudyMember extends PersistableEntity {
 
-	@Id
-	private String id;
-	private String studyId;
-	private String userId;
-
-	@Override
-	public boolean isNew() {
-		boolean isNew = Objects.isNull(this.id);
-		this.id = isNew ? UUID.randomUUID().toString() : this.id;
-		return isNew;
+	@Builder
+	private StudyMember(String id, String studyId, String userId, Authority authority) {
+		super(id);
+		this.studyId = studyId;
+		this.userId = userId;
+		this.authority = authority;
 	}
 
+	private String studyId;
+	private String userId;
 	private Authority authority;
 
 	public enum Authority {
