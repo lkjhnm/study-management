@@ -10,13 +10,17 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.convert.ConverterBuilder;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+import org.springframework.r2dbc.connection.R2dbcTransactionManager;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
+import org.springframework.transaction.ReactiveTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
+@EnableTransactionManagement
 @EnableR2dbcRepositories(basePackages = "com.grasstudy.group.repository")
 public class R2DBCConfiguration extends AbstractR2dbcConfiguration {
 
@@ -36,6 +40,11 @@ public class R2DBCConfiguration extends AbstractR2dbcConfiguration {
 		initializer.setConnectionFactory(connectionFactory);
 		initializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("table-schema.sql")));
 		return initializer;
+	}
+
+	@Bean
+	ReactiveTransactionManager transactionManager(ConnectionFactory connectionFactory) {
+		return new R2dbcTransactionManager(connectionFactory);
 	}
 
 	@Override
