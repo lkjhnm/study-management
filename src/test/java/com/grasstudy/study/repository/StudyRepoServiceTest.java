@@ -1,12 +1,14 @@
 package com.grasstudy.study.repository;
 
 import com.grasstudy.study.R2DBCConfiguration;
+import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.entity.StudyMember;
 import com.grasstudy.study.mock.MockData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.context.annotation.Import;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Objects;
@@ -24,48 +26,58 @@ class StudyRepoServiceTest {
 	@Autowired
 	StudyMemberRepository memberRepository;
 
+	private Mono<String> saveMockStudy() {
+		return studyRepoService.save(MockData.newStudy())
+		                       .map(Study::getId);
+	}
+
+	private Mono<String> saveMockStudyWithMember() {
+		return saveMockStudy()
+				.flatMap(studyId -> memberRepository.save(MockData.newStudyMember(studyId, StudyMember.Authority.MEMBER)))
+				.map(StudyMember::getStudyId);
+	}
+
 	@Test
 	void insert() {
-		StepVerifier.create(studyRepoService.save(MockData.newStudy())
-		                                    .flatMap(study -> studyRepository.findById(study.getId())))
-		            .expectNextCount(1)
-		            .verifyComplete();
+		studyRepoService.save(MockData.newStudy())
+		                .map(Study::getId)
+		                .flatMap(studyRepository::findById)
+		                .as(StepVerifier::create)
+		                .expectNextCount(1)
+		                .verifyComplete();
 	}
 
 	@Test
 	void update() {
-		StepVerifier.create(
-				            studyRepository.findAll().take(1)
-				                           .map(study -> {
-					                           study.setName("Modified Name");
-					                           return study;
-				                           })
-				                           .flatMap(studyRepository::save)
-				                           .flatMap(study -> studyRepository.findById(study.getId()))
-		            )
-		            .expectNextMatches(v -> v.getName().equals("Modified Name"))
-		            .verifyComplete();
+		saveMockStudy()
+				.flatMap(studyRepository::findById)
+				.map(study -> {
+					study.setName("Modified Name");
+					return study;
+				})
+				.flatMap(studyRepository::save)
+				.flatMap(study -> studyRepository.findById(study.getId()))
+				.as(StepVerifier::create)
+				.expectNextMatches(v -> v.getName().equals("Modified Name"))
+				.verifyComplete();
 	}
 
 	@Test
 	void fetchOne() {
-		StepVerifier.create(
-				            studyRepository.save(MockData.newStudy())
-				                           .flatMap(study -> memberRepository.save(MockData.newStudyMember(study.getId(), StudyMember.Authority.MEMBER)))
-				                           .flatMap(studyMember -> studyRepoService.fetchOne(studyMember.getStudyId()))
-		            )
-		            .expectNextMatches(v -> Objects.nonNull(v.getMembers()))
-		            .verifyComplete();
+		saveMockStudyWithMember()
+				.flatMap(studyRepoService::fetchOne)
+				.as(StepVerifier::create)
+				.expectNextMatches(v -> Objects.nonNull(v.getMembers()))
+				.verifyComplete();
 	}
 
 	@Test
 	void delete() {
-		StepVerifier.create(
-				            studyRepository.save(MockData.newStudy())
-				                           .flatMap(study -> memberRepository.save(MockData.newStudyMember(study.getId(), StudyMember.Authority.MEMBER)))
-				                           .flatMap(v -> studyRepoService.delete(v.getStudyId()))
-				                           .flatMap(id -> studyRepoService.fetchOne(id))
-		            ).expectNextCount(0)
-		            .verifyComplete();
+		saveMockStudyWithMember()
+		               .flatMap(studyRepoService::delete)
+		               .flatMap(studyRepoService::fetchOne)
+		               .as(StepVerifier::create)
+		               .expectNextCount(0)
+		               .verifyComplete();
 	}
 }
