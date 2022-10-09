@@ -15,13 +15,13 @@ public class StudyService {
 	private final StudyRepoService repository;
 	private final StudyEventPublisher studyEventPublisher;
 
-	public Mono<Study> create(Study study) {
-		return this.repository.save(study)
+	public Mono<Study> create(String userId, Study study) {
+		return this.repository.create(study, userId)
 		                      .doOnNext(this::publishCreateEvent);
 	}
 
 	public Mono<Study> modify(Study study) {
-		return this.repository.save(study);
+		return this.repository.modify(study);
 	}
 
 	public Mono<String> delete(String studyId) {
