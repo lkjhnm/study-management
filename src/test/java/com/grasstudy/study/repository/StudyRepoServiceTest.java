@@ -1,6 +1,8 @@
 package com.grasstudy.study.repository;
 
 import com.grasstudy.study.R2DBCConfiguration;
+import com.grasstudy.study.RxTransactional;
+import com.grasstudy.study.TxStepVerifier;
 import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.entity.StudyMember;
 import com.grasstudy.study.mock.MockData;
@@ -12,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import java.util.Objects;
 import static org.mockito.ArgumentMatchers.anyList;
 
 @DataR2dbcTest
+@RxTransactional
 @Import({R2DBCConfiguration.class, StudyRepoService.class})
 class StudyRepoServiceTest {
 
@@ -48,7 +50,7 @@ class StudyRepoServiceTest {
 		studyRepoService.create(MockData.study(), "test-user-id")
 		                .map(Study::getId)
 		                .flatMap(studyRepoService::fetchOne)
-		                .as(StepVerifier::create)
+		                .as(TxStepVerifier::create)
 		                .expectNextMatches(v -> Objects.nonNull(v.getId()) && v.getMembers().size() == 1)
 		                .verifyComplete();
 	}
@@ -59,11 +61,11 @@ class StudyRepoServiceTest {
 
 		studyRepoService.create(MockData.study(), "test-user-id")
 		                .map(Study::getId)
-		                .as(StepVerifier::create)
+		                .as(TxStepVerifier::create)
 		                .expectError().verify();
 
 		studyRepository.findAll()
-		               .as(StepVerifier::create)
+		               .as(TxStepVerifier::create)
 		               .expectNextCount(0)
 		               .verifyComplete();
 	}
@@ -80,7 +82,7 @@ class StudyRepoServiceTest {
 						                           .authority(StudyMember.Authority.MEMBER).build()
 				                )).build()
 				).flatMap(studyRepoService::modify)
-				.as(StepVerifier::create)
+				.as(TxStepVerifier::create)
 				.expectNextMatches(v -> v.getName().equals("changed") && v.getMembers().size() == 2)
 				.verifyComplete();
 	}
@@ -90,7 +92,7 @@ class StudyRepoServiceTest {
 		studyRepoService.save(MockData.study())
 		                .map(Study::getId)
 		                .flatMap(studyRepository::findById)
-		                .as(StepVerifier::create)
+		                .as(TxStepVerifier::create)
 		                .expectNextCount(1)
 		                .verifyComplete();
 	}
@@ -105,7 +107,7 @@ class StudyRepoServiceTest {
 				})
 				.flatMap(studyRepository::save)
 				.flatMap(study -> studyRepository.findById(study.getId()))
-				.as(StepVerifier::create)
+				.as(TxStepVerifier::create)
 				.expectNextMatches(v -> v.getName().equals("Modified Name"))
 				.verifyComplete();
 	}
@@ -114,7 +116,7 @@ class StudyRepoServiceTest {
 	void fetchOne() {
 		saveMockStudyWithMember()
 				.flatMap(studyRepoService::fetchOne)
-				.as(StepVerifier::create)
+				.as(TxStepVerifier::create)
 				.expectNextMatches(v -> Objects.nonNull(v.getMembers()))
 				.verifyComplete();
 	}
@@ -124,7 +126,7 @@ class StudyRepoServiceTest {
 		saveMockStudyWithMember()
 				.flatMap(studyRepoService::delete)
 				.flatMap(studyRepoService::fetchOne)
-				.as(StepVerifier::create)
+				.as(TxStepVerifier::create)
 				.expectNextCount(0)
 				.verifyComplete();
 	}
