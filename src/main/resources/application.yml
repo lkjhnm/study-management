@@ -8,3 +8,5 @@ spring:
           destination: study-create-event
         studyJoinEventPublisher-out-0:
           destination: study-join-event
+server:
+  port: 8081
