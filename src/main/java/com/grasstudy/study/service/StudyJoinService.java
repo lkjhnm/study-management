@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -18,6 +19,11 @@ public class StudyJoinService {
 	private final StudyJoinRepository joinRepository;
 	private final StudyRepository studyRepository;
 	private final StudyEventPublisher studyEventPublisher;
+
+	public Mono<List<StudyJoin>> list(String studyId) {
+		return joinRepository.findAllById(Mono.just(studyId))
+				.collectList();
+	}
 
 	public Mono<StudyJoin> join(String studyId, String userId) {
 		return studyRepository.findById(studyId)

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/study")
 @RequiredArgsConstructor
@@ -45,8 +47,13 @@ public class StudyController {
 		                   .onErrorReturn(ResponseEntity.internalServerError().build());
 	}
 
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public Mono<ResponseEntity<Void>> join(String studyId, String userId) {
+	@RequestMapping(value = "/join/{studyId}", method = RequestMethod.GET)
+	public Mono<List<StudyJoin>> joins(@PathVariable String studyId) {
+		return studyJoinService.list(studyId);
+	}
+
+	@RequestMapping(value = "/join/{studyId}", method = RequestMethod.POST)
+	public Mono<ResponseEntity<Void>> join(@PathVariable String studyId, String userId) {
 		return studyJoinService.join(studyId, userId)
 		                       .map(unused -> ResponseEntity.status(HttpStatus.CREATED).<Void>build())
 		                       .onErrorReturn(ResponseEntity.internalServerError().build());
