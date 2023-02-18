@@ -5,7 +5,7 @@ import com.grasstudy.study.RxTransactional;
 import com.grasstudy.study.TxStepVerifier;
 import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.entity.StudyMember;
-import com.grasstudy.study.mock.MockData;
+import com.grasstudy.study.test.mock.MockData;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

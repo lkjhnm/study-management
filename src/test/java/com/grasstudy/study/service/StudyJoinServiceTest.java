@@ -2,7 +2,7 @@ package com.grasstudy.study.service;
 
 import com.grasstudy.study.entity.StudyJoin;
 import com.grasstudy.study.event.StudyEventPublisher;
-import com.grasstudy.study.mock.MockData;
+import com.grasstudy.study.test.mock.MockData;
 import com.grasstudy.study.repository.StudyJoinRepository;
 import com.grasstudy.study.repository.StudyRepository;
 import org.junit.jupiter.api.Test;

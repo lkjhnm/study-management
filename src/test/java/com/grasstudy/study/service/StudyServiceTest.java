@@ -3,7 +3,7 @@ package com.grasstudy.study.service;
 import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.entity.StudyMember;
 import com.grasstudy.study.event.StudyEventPublisher;
-import com.grasstudy.study.mock.MockData;
+import com.grasstudy.study.test.mock.MockData;
 import com.grasstudy.study.repository.StudyRepoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -28,13 +28,12 @@ import reactor.core.publisher.Mono;
 public class WebSecurityConfiguration {
 
 	@Bean
-	public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http,
+	SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http,
 	                                                  WebFilter jwtAuthenticationFilter) {
 		return http
 				.httpBasic().disable()
 				.formLogin().disable()
 				.csrf().disable()
-				.authorizeExchange().anyExchange().authenticated().and()
 				.addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
 				.build();
 	}
@@ -49,12 +48,12 @@ public class WebSecurityConfiguration {
 	}
 
 	@Bean
-	public ReactiveAuthenticationManager authenticationManager(PkiBasedValidator<Claims> jwtValidator) {
+	ReactiveAuthenticationManager authenticationManager(PkiBasedValidator<Claims> jwtValidator) {
 		return new JwtAuthenticationManager(jwtValidator);
 	}
 
 	@Bean
-	public PkiBasedValidator<Claims> jwtValidator() {
+	PkiBasedValidator<Claims> jwtValidator() {
 		return new PkiBasedJwtValidator();
 	}
 

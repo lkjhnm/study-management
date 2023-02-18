@@ -2,11 +2,13 @@ spring:
   cloud:
     stream:
       function:
-        definition: studyCreateEventPublisher;studyJoinEventPublisher;
+        definition: studyCreateEventPublisher;studyJoinEventPublisher;keyCreateEventSubscriber;
       bindings:
         studyCreateEventPublisher-out-0:
           destination: study-create-event
         studyJoinEventPublisher-out-0:
           destination: study-join-event
+        keyCreateEventSubscriber-in-0:
+          destination: signkey-create-event
 server:
   port: 8081

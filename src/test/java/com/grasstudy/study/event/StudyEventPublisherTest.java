@@ -5,7 +5,7 @@ import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.entity.StudyJoin;
 import com.grasstudy.study.event.scheme.StudyCreateEvent;
 import com.grasstudy.study.event.scheme.StudyJoinEvent;
-import com.grasstudy.study.mock.MockData;
+import com.grasstudy.study.test.mock.MockData;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
