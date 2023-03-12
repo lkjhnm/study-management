@@ -16,27 +16,47 @@ jobs:
           java-version: '11'
           distribution: 'zulu'
           architecture: x64
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v20
+        with:
+          repositories: >
+            [
+              { "id": "grasstudy-snapshot", "url": "http://${{ secrets.HOST }}/nexus/repository/grasstudy-snapshot/" },
+              { "id": "grasstudy-release", "url": "http://${{ secrets.HOST }}/nexus/repository/grasstudy-release/" }
+            ]
+          servers: >
+            [
+              { "id": "grasstudy-snapshot", "username": "${{ secrets.NEXUS_USER }}", "password": "${{ secrets.NEXUS_PW }}" },
+              { "id": "grasstudy-release", "username": "${{ secrets.NEXUS_USER }}", "password": "${{ secrets.NEXUS_PW }}" }
+            ]
+          mirrors: >
+            [
+              {
+                "id": "grasstudy-snapshot",
+                "mirrorOf": "grasstudy-snapshot",
+                "url": "http://${{ secrets.HOST }}/nexus/repository/grasstudy-snapshot/",
+                "blocked": false
+            }]
       - name: Test & Build With Maven
         run: mvn clean package -Dmaven.test.skip=false -f pom.xml
-      - name: Deploy Service
+      - name: Deploy on Repository Server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           source: "target/group-*.jar"
-          target: ${{ secrets.SERVICE_PATH }}
+          target: ${{ secrets.DEPLOY_PATH }}
           strip_components: 1
-      - name: Restrat Service
+      - name: Continuous Delivery
         uses: appleboy/ssh-action@v0.1.6
         env:
-          SCRIPT_DIR: ${{ secrets.SERVICE_PATH }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: SCRIPT_DIR
+          envs: DEPLOY_PATH
           script: |
-            cd  $SCRIPT_DIR
-            sh ./stop.group-service.sh
-            sh ./start.group-service.sh
+            deploy.sh $DEPLOY_PATH \$GROUP_SERVICE_DIR
+            restart.sh GROUP
