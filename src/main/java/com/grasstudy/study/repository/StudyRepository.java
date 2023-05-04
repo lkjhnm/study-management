@@ -5,6 +5,6 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudyRepository extends ReactiveCrudRepository<Study, String> {
+interface StudyRepository extends ReactiveCrudRepository<Study, String> {
 
 }

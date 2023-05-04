@@ -3,7 +3,7 @@ package com.grasstudy.study.service;
 import com.grasstudy.study.entity.Study;
 import com.grasstudy.study.event.StudyEventPublisher;
 import com.grasstudy.study.event.scheme.StudyCreateEvent;
-import com.grasstudy.study.repository.StudyRepoService;
+import com.grasstudy.study.repository.StudyRepoDelegator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class StudyService {
 
-	private final StudyRepoService repository;
+	private final StudyRepoDelegator repository;
 	private final StudyEventPublisher studyEventPublisher;
 
 	public Mono<Study> create(String userId, Study study) {
@@ -26,6 +26,10 @@ public class StudyService {
 
 	public Mono<String> delete(String studyId) {
 		return this.repository.delete(studyId);
+	}
+
+	public Mono<Boolean> exist(String studyId) {
+		return this.repository.exist(studyId);
 	}
 
 	private void publishCreateEvent(Study study) {

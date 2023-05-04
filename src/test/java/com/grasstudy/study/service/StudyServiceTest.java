@@ -1,10 +1,10 @@
 package com.grasstudy.study.service;
 
 import com.grasstudy.study.entity.Study;
-import com.grasstudy.study.entity.StudyMember;
 import com.grasstudy.study.event.StudyEventPublisher;
+import com.grasstudy.study.entity.Crew;
+import com.grasstudy.study.repository.StudyRepoDelegator;
 import com.grasstudy.study.test.mock.MockData;
-import com.grasstudy.study.repository.StudyRepoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ class StudyServiceTest {
 	StudyService studyService;
 
 	@Mock
-	StudyRepoService studyRepoService;
+	StudyRepoDelegator studyRepoDelegator;
 
 	@Mock
 	StudyEventPublisher studyEventPublisher;
@@ -33,7 +33,7 @@ class StudyServiceTest {
 	@Test
 	void create() {
 		Study mockStudy = MockData.study("test-study-id");
-		Mockito.when(studyRepoService.create(any(), any())).thenReturn(Mono.just(mockStudy));
+		Mockito.when(studyRepoDelegator.create(any(), any())).thenReturn(Mono.just(mockStudy));
 
 		StepVerifier.create(studyService.create("test-study-owner", mockStudy))
 		            .expectNext(mockStudy)
@@ -44,9 +44,9 @@ class StudyServiceTest {
 	@Test
 	void modify() {
 		Study mockStudy = MockData.study("test-study-id");
-		StudyMember mockMember = MockData.studyMember("test-study-id", StudyMember.Authority.OWNER);
-		mockStudy.setMembers(List.of(mockMember));
-		Mockito.when(studyRepoService.modify(any())).thenReturn(Mono.just(mockStudy));
+		Crew mockMember = MockData.crew("test-study-id", Crew.Authority.OWNER);
+		mockStudy.setCrews(List.of(mockMember));
+		Mockito.when(studyRepoDelegator.modify(any())).thenReturn(Mono.just(mockStudy));
 
 		StepVerifier.create(studyService.modify(mockStudy))
 		            .expectNext(mockStudy)
@@ -56,7 +56,7 @@ class StudyServiceTest {
 	@Test
 	void delete() {
 		Study study = MockData.study("test-study-id");
-		Mockito.when(studyRepoService.delete(any())).thenReturn(Mono.just(study.getId()));
+		Mockito.when(studyRepoDelegator.delete(any())).thenReturn(Mono.just(study.getId()));
 		StepVerifier.create(studyService.delete(study.getId()))
 		            .expectNext("test-study-id")
 		            .verifyComplete();

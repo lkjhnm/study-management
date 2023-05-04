@@ -6,7 +6,7 @@ CREATE TABLE STUDY
     introduce     VARCHAR
 );
 
-CREATE TABLE STUDY_MEMBER
+CREATE TABLE CREW
 (
     id        VARCHAR primary key,
     study_id  VARCHAR,
@@ -14,7 +14,7 @@ CREATE TABLE STUDY_MEMBER
     authority VARCHAR
 );
 
-CREATE TABLE STUDY_JOIN
+CREATE TABLE ATTEND
 (
     id       VARCHAR primary key,
     study_id VARCHAR,

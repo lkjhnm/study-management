@@ -1,4 +1,4 @@
-name: member-service-CI/CD
+name: study-service-CI/CD
 
 on:
   push:

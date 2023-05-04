@@ -1,8 +1,8 @@
 package com.grasstudy.study.test.mock;
 
 import com.grasstudy.study.entity.Study;
-import com.grasstudy.study.entity.StudyJoin;
-import com.grasstudy.study.entity.StudyMember;
+import com.grasstudy.attend.entity.Attend;
+import com.grasstudy.study.entity.Crew;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -45,28 +45,28 @@ public class MockData {
 		            .build();
 	}
 
-	public static StudyMember studyMember(String id, String studyId, StudyMember.Authority authority) {
-		return StudyMember.builder()
-		                  .id(id)
-		                  .studyId(studyId)
-		                  .authority(authority)
-		                  .userId("test-member")
-		                  .build();
+	public static Crew crew(String id, String studyId, Crew.Authority authority) {
+		return Crew.builder()
+		           .id(id)
+		           .studyId(studyId)
+		           .authority(authority)
+		           .userId("test-member")
+		           .build();
 	}
 
-	public static StudyMember studyMember(String studyId, StudyMember.Authority authority) {
-		return StudyMember.builder()
-		                  .studyId(studyId)
-		                  .authority(authority)
-		                  .userId("test-member")
-		                  .build();
+	public static Crew crew(String studyId, Crew.Authority authority) {
+		return Crew.builder()
+		           .studyId(studyId)
+		           .authority(authority)
+		           .userId("test-member")
+		           .build();
 	}
 
-	public static StudyJoin studyJoin() {
-		return StudyJoin.builder()
-		                .studyId("test-study-id")
-		                .userId("test-user-id")
-		                .state(StudyJoin.JoinState.WAIT)
-		                .build();
+	public static Attend attend() {
+		return Attend.builder()
+		             .studyId("test-study-id")
+		             .userId("test-user-id")
+		             .state(Attend.AttendState.WAIT)
+		             .build();
 	}
 }
