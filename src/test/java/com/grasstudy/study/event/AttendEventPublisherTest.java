@@ -1,7 +1,7 @@
-package com.grasstudy.attend.event;
+package com.grasstudy.study.event;
 
 import com.grasstudy.attend.entity.Attend;
-import com.grasstudy.attend.event.scheme.AttendRequestEvent;
+import com.grasstudy.study.event.scheme.AttendEvent;
 import com.grasstudy.study.test.mock.MockData;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,13 +22,13 @@ import java.util.function.Supplier;
 
 @ExtendWith(SpringExtension.class)
 @Import({AttendEventPublisher.class, TestChannelBinderConfiguration.class})
-public class AttendRequestEventPublisherTest {
+public class AttendEventPublisherTest {
 
 	@Configuration
 	@EnableAutoConfiguration
 	static class OutboundConfiguration {
 		@Bean
-		public Supplier<Flux<AttendRequestEvent>> attendCreateEventPublisher(AttendEventPublisher attendEventPublisher) {
+		public Supplier<Flux<AttendEvent>> attendCreateEventPublisher(AttendEventPublisher attendEventPublisher) {
 			return () -> attendEventPublisher.attendCreateEventFlux();
 		}
 	}
@@ -43,15 +43,15 @@ public class AttendRequestEventPublisherTest {
 	CompositeMessageConverter compositeMessageConverter;
 
 	@Test
-	void attend_create_event_publish() {
-		Attend mockAttend = MockData.attend();
-		attendEventPublisher.publish(AttendRequestEvent.builder()
-		                                               .attend(mockAttend)
-		                                               .build());
+	void attend_request_event_publish() {
+		Attend mockAttend = MockData.attend(Attend.AttendState.WAIT);
+		attendEventPublisher.publish(AttendEvent.builder()
+		                                        .attend(mockAttend)
+		                                        .build());
 
 		Message<byte[]> receive = outputDestination.receive(1000, "attendCreateEventPublisher-out-0");
 		Assertions.assertThat(receive).isNotNull();
-		AttendRequestEvent attendRequestEvent = (AttendRequestEvent) compositeMessageConverter.fromMessage(receive, AttendRequestEvent.class);
+		AttendEvent attendRequestEvent = (AttendEvent) compositeMessageConverter.fromMessage(receive, AttendEvent.class);
 		Assertions.assertThat(attendRequestEvent)
 		          .matches(v -> v.getAttend().getStudyId().equals(mockAttend.getStudyId()), "StudyId Equals")
 		          .matches(v -> v.getAttend().getUserId().equals(mockAttend.getUserId()), "UserId Equals")

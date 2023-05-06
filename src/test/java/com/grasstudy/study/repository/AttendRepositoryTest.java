@@ -20,7 +20,7 @@ class AttendRepositoryTest {
 
 	@Test
 	void save() {
-		Attend mockAttend = MockData.attend();
+		Attend mockAttend = MockData.attend(Attend.AttendState.WAIT);
 		attendRepository.save(mockAttend)
 		                .as(StepVerifier::create)
 		                .expectNext(mockAttend)

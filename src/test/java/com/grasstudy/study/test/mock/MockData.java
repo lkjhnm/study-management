@@ -62,11 +62,11 @@ public class MockData {
 		           .build();
 	}
 
-	public static Attend attend() {
+	public static Attend attend(Attend.AttendState state) {
 		return Attend.builder()
 		             .studyId("test-study-id")
 		             .userId("test-user-id")
-		             .state(Attend.AttendState.WAIT)
+		             .state(state)
 		             .build();
 	}
 }

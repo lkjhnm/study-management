@@ -1,6 +1,6 @@
-package com.grasstudy.attend.event;
+package com.grasstudy.study.event;
 
-import com.grasstudy.attend.event.scheme.AttendRequestEvent;
+import com.grasstudy.study.event.scheme.AttendEvent;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -9,19 +9,19 @@ import java.util.function.Consumer;
 @Service
 public class AttendEventPublisher {
 
-	private final Flux<AttendRequestEvent> attendCreateEventFlux;
+	private final Flux<AttendEvent> attendCreateEventFlux;
 
-	private Consumer<AttendRequestEvent> attendCreateEventConsumer;
+	private Consumer<AttendEvent> attendCreateEventConsumer;
 
 	public AttendEventPublisher() {
 		attendCreateEventFlux = Flux.create(fluxSink -> attendCreateEventConsumer = fluxSink::next);
 	}
 
-	public void publish(AttendRequestEvent eventMessage) {
+	public void publish(AttendEvent eventMessage) {
 		this.attendCreateEventConsumer.accept(eventMessage);
 	}
 
-	public Flux<AttendRequestEvent> attendCreateEventFlux() {
+	public Flux<AttendEvent> attendCreateEventFlux() {
 		return this.attendCreateEventFlux;
 	}
 }

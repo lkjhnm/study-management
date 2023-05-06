@@ -7,8 +7,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-interface CrewRepository extends ReactiveCrudRepository<Crew, String> {
+public interface CrewRepository extends ReactiveCrudRepository<Crew, String> {
 
 	Flux<Crew> findAllByStudyId(String studyId);
 	Mono<Void> deleteAllByStudyId(String studyId);
+	Mono<Crew> findByStudyIdAndUserId(String studyId, String userId);
 }
