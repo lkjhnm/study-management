@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.grasstudy</groupId>
-    <artifactId>group</artifactId>
+    <artifactId>study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>group</name>
-    <description>microservice for study group management</description>
+    <name>study</name>
+    <description>microservice for study management</description>
     <properties>
         <java.version>11</java.version>
         <reuseForks>false</reuseForks>
