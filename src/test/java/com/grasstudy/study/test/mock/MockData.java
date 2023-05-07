@@ -13,6 +13,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class MockData {
 
@@ -45,21 +46,22 @@ public class MockData {
 		            .build();
 	}
 
-	public static Crew crew(String id, String studyId, Crew.Authority authority) {
+	public static Crew managedCrew(String studyId, Crew.Authority authority) {
+		UUID uuid = UUID.randomUUID();
+		return managedCrew(uuid.toString(), studyId, authority, UUID.randomUUID().toString());
+	}
+
+	public static Crew managedCrew(String id, String studyId, Crew.Authority authority, String userId) {
 		return Crew.builder()
 		           .id(id)
 		           .studyId(studyId)
 		           .authority(authority)
-		           .userId("test-member")
+		           .userId(userId)
 		           .build();
 	}
 
-	public static Crew crew(String studyId, Crew.Authority authority) {
-		return Crew.builder()
-		           .studyId(studyId)
-		           .authority(authority)
-		           .userId("test-member")
-		           .build();
+	public static Crew transientCrew(String studyId, Crew.Authority authority, String userId) {
+		return managedCrew(null, studyId, authority, userId);
 	}
 
 	public static Attend attend(Attend.AttendState state) {

@@ -44,7 +44,7 @@ class StudyServiceTest {
 	@Test
 	void modify() {
 		Study mockStudy = MockData.study("test-study-id");
-		Crew mockMember = MockData.crew("test-study-id", Crew.Authority.OWNER);
+		Crew mockMember = MockData.managedCrew("test-study-id", Crew.Authority.OWNER);
 		mockStudy.setCrews(List.of(mockMember));
 		Mockito.when(studyRepoDelegator.modify(any())).thenReturn(Mono.just(mockStudy));
 

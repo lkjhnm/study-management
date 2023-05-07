@@ -11,7 +11,8 @@ CREATE TABLE CREW
     id        VARCHAR primary key,
     study_id  VARCHAR,
     user_id   VARCHAR,
-    authority VARCHAR
+    authority VARCHAR,
+    constraint crew_unique_key unique (study_id, user_id, authority)
 );
 
 CREATE TABLE ATTEND

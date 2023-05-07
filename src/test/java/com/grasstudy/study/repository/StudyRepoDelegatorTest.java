@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.anyList;
 
@@ -41,7 +42,8 @@ class StudyRepoDelegatorTest {
 
 	private Mono<String> saveMockStudyWithMember() {
 		return saveMockStudy()
-				.flatMap(studyId -> crewRepository.save(MockData.crew(studyId, Crew.Authority.MEMBER)))
+				.flatMap(studyId -> crewRepository.save(
+						MockData.transientCrew(studyId, Crew.Authority.MEMBER, UUID.randomUUID().toString())))
 				.map(Crew::getStudyId);
 	}
 

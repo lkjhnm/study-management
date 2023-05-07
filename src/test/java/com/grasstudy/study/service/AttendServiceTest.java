@@ -71,8 +71,8 @@ public class AttendServiceTest {
 	@Test
 	public void attend_approve() {
 		Attend mockAttend = MockData.attend(Attend.AttendState.ACCEPT);
-		Crew mockCrewOwner = MockData.crew("test-study-id", Crew.Authority.OWNER);
-		Crew mockCrewMember = MockData.crew("test-study-id", Crew.Authority.MEMBER);
+		Crew mockCrewOwner = MockData.managedCrew("test-study-id", Crew.Authority.OWNER);
+		Crew mockCrewMember = MockData.managedCrew("test-study-id", Crew.Authority.MEMBER);
 		Mockito.when(crewRepository.findByStudyIdAndUserId(anyString(), anyString())).thenReturn(Mono.just(mockCrewOwner));
 		Mockito.when(attendRepository.save(mockAttend)).thenReturn(Mono.just(mockAttend));
 		Mockito.when(crewRepository.save(any(Crew.class))).thenReturn(Mono.just(mockCrewMember));
@@ -89,7 +89,7 @@ public class AttendServiceTest {
 	@Test
 	public void attend_reject() {
 		Attend mockAttend = MockData.attend(Attend.AttendState.REJECT);
-		Crew mockCrewOwner = MockData.crew("test-study-id", Crew.Authority.OWNER);
+		Crew mockCrewOwner = MockData.managedCrew("test-study-id", Crew.Authority.OWNER);
 		Mockito.when(crewRepository.findByStudyIdAndUserId(anyString(), anyString())).thenReturn(Mono.just(mockCrewOwner));
 		Mockito.when(attendRepository.save(mockAttend)).thenReturn(Mono.just(mockAttend));
 
@@ -105,7 +105,7 @@ public class AttendServiceTest {
 	@Test
 	public void attend_unauthorized() {
 		Attend mockAttend = MockData.attend(Attend.AttendState.ACCEPT);
-		Crew unAuthCrew = MockData.crew("test-study-id", Crew.Authority.MEMBER);
+		Crew unAuthCrew = MockData.managedCrew("test-study-id", Crew.Authority.MEMBER);
 		Mockito.when(crewRepository.findByStudyIdAndUserId(anyString(), anyString())).thenReturn(Mono.just(unAuthCrew));
 
 		attendService.manage(mockAttend, "owner-id")
