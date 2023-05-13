@@ -21,22 +21,16 @@ repositories {
     mavenCentral()
 }
 
-extra["springCloudVersion"] = "2021.0.7"
-
 dependencies {
     implementation("org.apache.kafka:kafka-streams")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.cloud:spring-cloud-stream")
-    implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka-streams")
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-stream-kafka
+    implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka:3.2.4")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-}
-
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-stream-binder-test
+    testImplementation("org.springframework.cloud:spring-cloud-stream-binder-test:3.2.4")
 }
 
 tasks.withType<KotlinCompile> {
