@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    stream:
+      function:
+        definition: attendEventSubscriber;
+      bindings:
+        attendEventSubscriber-in-0:
+          destination: attend-event
+server:
+  port: 8082
