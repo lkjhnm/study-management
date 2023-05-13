@@ -9,19 +9,19 @@ import java.util.function.Consumer;
 @Service
 public class AttendEventPublisher {
 
-	private final Flux<AttendEvent> attendCreateEventFlux;
+	private final Flux<AttendEvent> attendEventFlux;
 
-	private Consumer<AttendEvent> attendCreateEventConsumer;
+	private Consumer<AttendEvent> attendEventConsumer;
 
 	public AttendEventPublisher() {
-		attendCreateEventFlux = Flux.create(fluxSink -> attendCreateEventConsumer = fluxSink::next);
+		attendEventFlux = Flux.create(fluxSink -> attendEventConsumer = fluxSink::next);
 	}
 
 	public void publish(AttendEvent eventMessage) {
-		this.attendCreateEventConsumer.accept(eventMessage);
+		this.attendEventConsumer.accept(eventMessage);
 	}
 
-	public Flux<AttendEvent> attendCreateEventFlux() {
-		return this.attendCreateEventFlux;
+	public Flux<AttendEvent> attendEventFlux() {
+		return this.attendEventFlux;
 	}
 }

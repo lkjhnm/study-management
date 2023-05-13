@@ -19,8 +19,8 @@ public class OutboundEventConfiguration {
 	}
 
 	@Bean
-	public Supplier<Flux<AttendEvent>> attendCreateEventPublisher(AttendEventPublisher attendEventPublisher) {
-		return () -> attendEventPublisher.attendCreateEventFlux();
+	public Supplier<Flux<AttendEvent>> attendEventPublisher(AttendEventPublisher attendEventPublisher) {
+		return () -> attendEventPublisher.attendEventFlux();
 	}
 
 }

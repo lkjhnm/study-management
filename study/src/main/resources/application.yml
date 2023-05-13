@@ -2,12 +2,12 @@ spring:
   cloud:
     stream:
       function:
-        definition: studyCreateEventPublisher;attendRequestEventPublisher;keyCreateEventSubscriber;
+        definition: studyCreateEventPublisher;attendEventPublisher;keyCreateEventSubscriber;
       bindings:
         studyCreateEventPublisher-out-0:
           destination: study-create-event
-        attendRequestEventPublisher-out-0:
-          destination: attend-request-event
+        attendEventPublisher-out-0:
+          destination: attend-event
         keyCreateEventSubscriber-in-0:
           destination: signkey-create-event
 server:

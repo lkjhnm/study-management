@@ -28,8 +28,8 @@ public class AttendEventPublisherTest {
 	@EnableAutoConfiguration
 	static class OutboundConfiguration {
 		@Bean
-		public Supplier<Flux<AttendEvent>> attendCreateEventPublisher(AttendEventPublisher attendEventPublisher) {
-			return () -> attendEventPublisher.attendCreateEventFlux();
+		public Supplier<Flux<AttendEvent>> attendEventPublisher(AttendEventPublisher attendEventPublisher) {
+			return () -> attendEventPublisher.attendEventFlux();
 		}
 	}
 
@@ -49,7 +49,7 @@ public class AttendEventPublisherTest {
 		                                        .attend(mockAttend)
 		                                        .build());
 
-		Message<byte[]> receive = outputDestination.receive(1000, "attendCreateEventPublisher-out-0");
+		Message<byte[]> receive = outputDestination.receive(1000, "attendEventPublisher-out-0");
 		Assertions.assertThat(receive).isNotNull();
 		AttendEvent attendRequestEvent = (AttendEvent) compositeMessageConverter.fromMessage(receive, AttendEvent.class);
 		Assertions.assertThat(attendRequestEvent)
