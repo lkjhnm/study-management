@@ -8,3 +8,7 @@ spring:
           destination: attend-event
 server:
   port: 8082
+
+grasstudy:
+  google:
+    credentials: ${GOOGLE_APPLICATION_CREDENTIALS}

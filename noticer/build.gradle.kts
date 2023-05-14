@@ -26,7 +26,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-stream-kafka
     implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka:3.2.4")
-    compileOnly("org.projectlombok:lombok")
+	// https://mvnrepository.com/artifact/com.google.api-client/google-api-client
+	implementation ("com.google.auth:google-auth-library-oauth2-http:1.3.0")
+	compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-stream-binder-test
