@@ -1,7 +1,7 @@
-package com.grasstudy.noticer.attend
+package com.grasstudy.noticer.event.attend
 
-import com.grasstudy.noticer.attend.scheme.event.AttendEvent
-import com.grasstudy.noticer.attend.scheme.event.AttendState
+import com.grasstudy.noticer.event.attend.scheme.AttendEvent
+import com.grasstudy.noticer.event.attend.scheme.AttendState
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 import org.slf4j.Logger
@@ -19,6 +19,8 @@ class AttendEventConfiguration {
 		return object : Subscriber<AttendEvent> {
 			override fun onSubscribe(s: Subscription) {
 				logger.info("Initialize complete {}", s)
+				s.request(Long.MAX_VALUE)
+				// does need to control flow?
 			}
 
 			override fun onNext(t: AttendEvent) {
@@ -54,7 +56,6 @@ class AttendEventConfiguration {
 	}
 
 	private fun processReject(attendEvent: AttendEvent) {
-		logger.info("{}", attendEvent)
 		//todo: 유저에게 거절 알림 보내기
 	}
 

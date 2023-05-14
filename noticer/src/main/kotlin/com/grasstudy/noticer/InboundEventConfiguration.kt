@@ -1,6 +1,6 @@
 package com.grasstudy.noticer
 
-import com.grasstudy.noticer.attend.scheme.event.AttendEvent
+import com.grasstudy.noticer.event.attend.scheme.AttendEvent
 import org.reactivestreams.Subscriber
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
